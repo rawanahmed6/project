@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ProductiveHub</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #f3f4f7, #e0eafc);
+      color: #2c3e50;
+    }
+
+    header {
+      background: linear-gradient(to right, #6c5ce7, #00cec9);
+      padding: 25px 15px;
+      text-align: center;
+      color: #ffffff;
+      position: relative;
+    }
+
+    header::after {
+      content: "🌟 Made Just for You";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #6c5ce7;
+      padding: 4px 12px;
+      font-size: 13px;
+      border-radius: 25px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      background: #222;
+      padding: 12px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #f1f1f1;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    nav a:hover {
+      color: #81ecec;
+    }
+
+    main {
+      padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    section {
+      flex: 1 1 330px;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      color: #6c5ce7;
+      margin-bottom: 15px;
+    }
+
+    #todo-list input[type="text"] {
+      padding: 10px;
+      width: 70%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    #todo-list button {
+      padding: 10px 12px;
+      background-color: #00cec9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      background: #f7f8fa;
+      border-left: 5px solid #6c5ce7;
+      padding: 8px 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+    }
+
+    .task.done {
+      background: #d0f0f3;
+      text-decoration: line-through;
+      border-left-color: #00cec9;
+    }
+
+    form input, form button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    form button {
+      background-color: #6c5ce7;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+    }
+
+    #info {
+      font-style: italic;
+      color: #636e72;
+      margin-top: 12px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .quote-box {
+      background: #ffeaa7;
+      padding: 15px;
+      margin-top: 20px;
+      border-left: 4px solid #fdcb6e;
+      border-radius: 6px;
+      font-style: italic;
+      color: #2d3436;
+    }
+
+    .fun-mode {
+      margin-top: 20px;
+      background-color: #fab1a0;
+      border-radius: 8px;
+      padding: 15px;
+      font-weight: bold;
+      text-align: center;
+      animation: pulse 2s infinite;
+      color: #2d3436;
+      cursor: pointer;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .pet-companion {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 80px;
+      height: 80px;
+      background: url('https://em-content.zobj.net/source/apple/354/sparkles_2728.png') no-repeat center center / contain;
+      animation: float 3s ease-in-out infinite;
+      z-index: 1000;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #2d3436;
+      color: #dfe6e9;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ProductiveHub</h1>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#todo-list">To-Do</a>
+    <a href="#register">Register</a>
+  </nav>
+
+  <main>
+    <section id="todo-list">
+      <h2>📝 To-Do List</h2>
+      <input type="text" id="taskInput" placeholder="What do you need to do?" />
+      <button onclick="addTask()">Add Task</button>
+      <ul id="tasks"></ul>
+      <p>Total Tasks: <span id="count">0</span></p>
+    </section>
+
+    <section id="register">
+      <h2>🧾 Registration</h2>
+      <form onsubmit="validateForm(event)">
+        <input type="text" id="name" placeholder="Your Name" />
+        <input type="email" id="email" placeholder="Email Address" />
+        <input type="password" id="password" placeholder="Password" />
+        <button type="submit">Register</button>
+        <p id="formMsg"></p>
+      </form>
+    </section>
+
+    <section id="demo-js">
+      <h2>🎁 Surprise Reveal</h2>
+      <button onclick="toggleParagraph()">Click Me</button>
+      <p id="info" style="display:none;">✨ Surprise! You're exploring a custom-made experience.</p>
+
+      <div class="quote-box" id="quoteBox">💬 Click below to get a random quote.</div>
+      <button onclick="showQuote()" style="margin-top: 10px;">Inspire Me</button>
+
+      <div class="fun-mode" onclick="triggerConfetti()">🎉 FUN MODE: Click me for magic!</div>
+    </section>
+  </main>
+
+  <div class="pet-companion" title="Hi, I'm your sparkle buddy!"></div>
+
+  <footer>
+    &copy; 2025 ProductiveHub — Designed just for you 💎
+  </footer>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    function renderTasks() {
+      const taskList = document.getElementById("tasks");
+      const count = document.getElementById("count");
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.className = "task" + (task.done ? " done" : "");
+        li.innerHTML = `
+          <span onclick="toggleDone(${index})">${task.text}</span>
+          <button onclick="deleteTask(${index})">❌</button>
+        `;
+        taskList.appendChild(li);
+      });
+      count.innerText = tasks.length;
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      if (input.value.trim()) {
+        tasks.push({ text: input.value.trim(), done: false });
+        input.value = "";
+        renderTasks();
+      }
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+    }
+
+    function toggleDone(index) {
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    renderTasks();
+
+    function validateForm(event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("formMsg");
+
+      if (!name) {
+        msg.innerText = "Name is required.";
+        msg.style.color = "#d63031";
+      } else if (!email.includes("@")) {
+        msg.innerText = "Please enter a valid email.";
+        msg.style.color = "#d63031";
+      } else if (password.length < 6) {
+        msg.innerText = "Password should be at least 6 characters.";
+        msg.style.color = "#d63031";
+      } else {
+        msg.innerText = "Registration successful!";
+        msg.style.color = "#00b894";
+      }
+    }
+
+    function toggleParagraph() {
+      const info = document.getElementById("info");
+      info.style.display = info.style.display === "none" ? "block" : "none";
+    }
+
+    const quotes = [
+      "Dream big, start small, act now.",
+      "Success is not for the lazy.",
+      "Stay positive, work hard, make it happen.",
+      "Believe in yourself and you’re halfway there.",
+      "Great things never come from comfort zones."
+    ];
+
+    function showQuote() {
+      const quoteBox = document.getElementById("quoteBox");
+      const random = Math.floor(Math.random() * quotes.length);
+      quoteBox.innerText = `💬 ${quotes[random]}`;
+    }
+
+    function triggerConfetti() {
+      alert("🎊 Confetti explosion coming soon! (Imagine fun animation here)");
+    }
+  </script>
+</body>
+</html>
